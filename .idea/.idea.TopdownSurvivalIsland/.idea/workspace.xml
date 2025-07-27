@@ -4,19 +4,45 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5f710aab-0dec-4eed-ac2f-318e2c2db448" name="Changes" comment="" />
+    <list default="true" id="5f710aab-0dec-4eed-ac2f-318e2c2db448" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.TopdownSurvivalIsland/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TopdownSurvivalIsland/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/New Terrain.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/New Terrain.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Animations/Player/Player Animator.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Animations/Player/Player Animator.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Animations/Player/Polygon/Masculine/Idle/A_Idle_Standing_Masc.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Animations/Player/Polygon/Masculine/Idle/A_Idle_Standing_Masc.fbx.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Animations/Player/Polygon/Masculine/Locomotion/Run/A_Run_F_Masc.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Animations/Player/Polygon/Masculine/Locomotion/Run/A_Run_F_Masc.fbx.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Modules/Control System/InputHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Modules/Control System/InputHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Modules/Control System/Keyboard/KeyboardControl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Modules/Control System/Keyboard/KeyboardControl.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/Player/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/UI/UIGame.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/UI/UIGame.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/InputSystem_Actions.inputactions" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/InputSystem_Actions.inputactions" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DpaMonitoringSettings">
+    <option name="firstShow" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///AIAssistantSnippet.." root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///AIAssistantSnippet.." root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///AIAssistantSnippet." root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///AIAssistantSnippet." root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/84f0d810adef4e6c8deab33e4ae93f7c1dec00/4b/5116f7a4/Object.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/91062591f4db4bdb9210604cc73c48381f9200/79/23337e7b/LayoutDataStore.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Survival Island  Template/Assets/Project Data/Game/Scripts/Player/PlayerBehavior.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Project Data/Core/Scripts/Runtime/Utils/CoreExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Project Data/Game/Modules/Control System/IControlBehavior.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal/ShaderLibrary/SurfaceInput.hlsl" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal/Shaders/Lit.shader" root0="SKIP_HIGHLIGHTING" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -27,18 +53,24 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;Attach to Unity Editor.Attach to Unity Editor.executor&quot;: &quot;Debug&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Standalone Player.Start Unity.executor&quot;: &quot;Run&quot;,
+    &quot;com.google.cloudcode.ide_session_index&quot;: &quot;20250725_0006&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.codegpt.services.anthropic&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+  <component name="RunManager" selected="Standalone Player.Start Unity">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.34f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath E:\PROJECT\TopdownSurvivalIsland -debugCodeOptimization" />
@@ -102,13 +134,42 @@
       <workItem from="1753074974500" duration="5557000" />
       <workItem from="1753099648443" duration="6761000" />
       <workItem from="1753184029078" duration="9969000" />
-      <workItem from="1753231463846" duration="8469000" />
+      <workItem from="1753231463846" duration="16687000" />
+      <workItem from="1753250379056" duration="608000" />
+      <workItem from="1753251100479" duration="2256000" />
+      <workItem from="1753263329269" duration="6212000" />
+      <workItem from="1753271037963" duration="5171000" />
+      <workItem from="1753281586926" duration="1724000" />
+      <workItem from="1753318468555" duration="18459000" />
+      <workItem from="1753340862217" duration="2456000" />
+      <workItem from="1753350558213" duration="7601000" />
+      <workItem from="1753367654160" duration="2364000" />
+      <workItem from="1753410531526" duration="5189000" />
+      <workItem from="1753440154892" duration="8008000" />
+      <workItem from="1753451301609" duration="1925000" />
+      <workItem from="1753453250061" duration="165000" />
+      <workItem from="1753453432301" duration="806000" />
+      <workItem from="1753454255907" duration="33000" />
+      <workItem from="1753454304265" duration="195000" />
+      <workItem from="1753454520319" duration="92000" />
+      <workItem from="1753454628037" duration="133000" />
+      <workItem from="1753454778079" duration="69000" />
+      <workItem from="1753454863664" duration="266000" />
+      <workItem from="1753456700274" duration="2720000" />
+      <workItem from="1753460643625" duration="605000" />
+      <workItem from="1753499920893" duration="21509000" />
+      <workItem from="1753533471268" duration="8886000" />
+      <workItem from="1753576953165" duration="415000" />
+      <workItem from="1753577396847" duration="8812000" />
+      <workItem from="1753613641844" duration="3291000" />
+      <workItem from="1753621077272" duration="1238000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityProjectDiscoverer">
     <option name="hasUnityReference" value="true" />
@@ -136,5 +197,9 @@
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

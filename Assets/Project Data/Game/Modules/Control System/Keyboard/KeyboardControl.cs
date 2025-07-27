@@ -28,7 +28,7 @@ namespace FXnRXn
 		private InputAction shootAction;
 		private InputAction reloadAction;
 		private InputAction aimAction;
-
+		private InputAction interactAction;
 
 		public Action onJump;
 		public Action onShoot;
@@ -59,6 +59,10 @@ namespace FXnRXn
 			moveAction = InputSystem.actions.FindAction("Move");
 			moveAction.performed += OnMove;
 			moveAction.canceled += OnMove;
+			
+			interactAction = InputSystem.actions.FindAction("Interact");
+			interactAction.performed += OnInteract;
+			interactAction.canceled += OnInteract;
 			
 			// lookAction = InputSystem.actions.FindAction("Look");
 			// lookAction.performed += OnLook;
@@ -104,6 +108,14 @@ namespace FXnRXn
 		{
 			Vector3 move = new Vector3(ctx.ReadValue<Vector2>().x, 0, ctx.ReadValue<Vector2>().y);
 			MovementInput = Vector3.ClampMagnitude(move, 1);
+		}
+		
+		public void OnInteract(InputAction.CallbackContext ctx)
+		{
+			if (ctx.control.IsPressed())
+			{
+				InputHandler.Instance.onInteract?.Invoke();
+			}
 		}
 
 		// public void OnLook(InputAction.CallbackContext ctx)

@@ -17,12 +17,12 @@ namespace FXnRXn
 
 		public static readonly int RUN_HASH										= Animator.StringToHash("Run");
 		public static readonly int MOVEMENT_MULTIPLIER_HASH						= Animator.StringToHash("Movement Multiplier");
+		public static readonly int TIRED_MULTIPLIER_HASH						= Animator.StringToHash("Tired Multiplier");
 
 		#endregion
 		
 		#region Properties
 		[Header("--- Player Settings ---")]
-		[SerializeField] private bool							isGrounded;
 		[SerializeField] private float							playerMovementSpeed = 4f;
 		[SerializeField] private float							playerAcceleration = 7f;
 		[SerializeField] private float							gravity = -9.81f;
@@ -31,18 +31,20 @@ namespace FXnRXn
 		[SerializeField] private LayerMask						groundLayerMask = 1; // Ground layer
 		[SerializeField] private float							groundCheckDistance = 0.2f;
 		[SerializeField] private Transform						groundCheckPoint;
-
 		
 		
 		
+		private bool isGrounded;
+		public bool IsGrounded => isGrounded;
 		private bool isRunning;
-		public static bool IsRunning => Instance.isRunning;
+		public bool IsRunning => Instance.isRunning;
 		
 		private float speed = 0;
-		private bool IsMovementEnabled { get; set; }
+		public bool IsMovementEnabled { get; set; }
 		
 		private Animator playerAnimator;
 		private CharacterController playerController;
+		private PorterSystem porterSystem;
 		
 		private Vector3 playerVelocity;
 		private float maxSpeed;
@@ -57,6 +59,7 @@ namespace FXnRXn
 			if (Instance == null) Instance = this;
 			if(playerController == null) playerController = GetComponent<CharacterController>();
 			if(playerAnimator == null) playerAnimator = GetComponentInChildren<Animator>();
+			if (porterSystem == null) porterSystem = GetComponent<PorterSystem>();
 		}
 
 		private void Start()
@@ -118,6 +121,7 @@ namespace FXnRXn
 					
 					float multiplier = speed / maxSpeed;
 					playerAnimator.SetFloat(MOVEMENT_MULTIPLIER_HASH, multiplier);
+					//playerAnimator.SetFloat(TIRED_MULTIPLIER_HASH, porterSystem.ApplyMovementModifiers() > 0.5f ? 0 : 1);
 					
 					horizontalMovement = InputHandler.Instance.MovementInput * speed * Time.deltaTime;
 					transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(InputHandler.Instance.MovementInput.normalized), 0.2f);
@@ -135,7 +139,7 @@ namespace FXnRXn
 				}
 				
 				Vector3 totalMovement = horizontalMovement + (playerVelocity * Time.deltaTime);
-				playerController.Move(totalMovement);
+				playerController.Move(totalMovement * porterSystem.ApplyMovementModifiers());
 				
 
 			}
@@ -175,7 +179,8 @@ namespace FXnRXn
 		
 		
 		//--------------------------------------------------------------------------------------------------------------
-		
+		public CharacterController GetCharacterController() => playerController;
+		public PorterSystem GetPosterSystem() => porterSystem;
 		private void OnDrawGizmosSelected()
 		{
 			if (groundCheckPoint != null)

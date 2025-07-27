@@ -12,6 +12,8 @@ namespace FXnRXn
 		public Vector3 MovementInput { get; private set; }
 		public bool IsMovementInputNonZero { get; private set;}
 		
+		public Action onInteract;
+		
 		
 		private void Awake()
 		{
