@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - NPCCargo
   layers:
   - Default
   - TransparentFX
@@ -14,11 +15,11 @@ TagManager:
   - Ground
   - Player
   - CargoItem
-  - 
-  - 
-  - 
-  - 
-  - 
+  - NPC
+  - BT
+  - Weapon
+  - Scan
+  - Road
   - 
   - 
   - 

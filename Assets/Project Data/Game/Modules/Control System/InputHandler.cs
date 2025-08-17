@@ -13,6 +13,7 @@ namespace FXnRXn
 		public bool IsMovementInputNonZero { get; private set;}
 		
 		public Action onInteract;
+		public Action onScan;
 		
 		
 		private void Awake()

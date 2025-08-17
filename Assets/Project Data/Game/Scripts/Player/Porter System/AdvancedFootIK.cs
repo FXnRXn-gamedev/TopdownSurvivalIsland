@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
+using TriInspector;
 using UnityEngine;
+using Random = System.Random;
 
 
 namespace FXnRXn
@@ -7,8 +10,9 @@ namespace FXnRXn
 	public class AdvancedFootIK : MonoBehaviour
 	{
 		#region Properties
-
-		[Header("---	Feet Settings	---")] 
+		[Title("Feet Settings")]
+		[Space(10)]
+		[Required]
 		[SerializeField] private Animator								animator;
 		[SerializeField] private bool									enableFeetIK = true;
 		[SerializeField] private LayerMask								groundLayer = -1;
@@ -18,13 +22,30 @@ namespace FXnRXn
 		[Range(0f, 1f)] [SerializeField] private float					pelvisUpAndDownSpeed = 0.28f;
 		[Range(0f, 1f)] [SerializeField] private float					feetToIkPositionSpeed = 0.5f;
 		
-		[Header("---    Weight Response Settings    ---")]
+		[Title("Weight Response Settings")]
+		[Space(10)]
 		[SerializeField] private float									maxWeightFootSpread = 0.3f;
 		[SerializeField] private float									weightBalanceResponseSpeed = 5f;
 		[SerializeField] private float									maxFootRotationAngle = 15f;
 		[SerializeField] private float									weightSwayInfluence = 0.2f;
+		[Range(0, 0.2f)][SerializeField] private float					weightInfluencePelvis = 0.05f;
+
+		[Title("Body Lean Settings")] 
+		[Space(10)]
+		[SerializeField] private bool									enableBodyLean;
+		[Range(0, 1)][SerializeField] private float						leanTriggerWeightThreshold;
+		[Range(0, 1)][SerializeField] private float						leanTriggerBalanceThreshold;
+		[SerializeField] private float									maxLeanAngle = 25f;
+		[SerializeField] private float									leanSpeed = 2f;
+		[SerializeField] private float									leanRecoverySpeed = 3f;
+		[SerializeField] private float									timeBeforeCargoDrops = 2f;
+		[SerializeField] private float									cargoDropPercentage = 0.4f;
+		[SerializeField] private float									howManyLeanHappen = 3f;
 		
-		[Header("---	Curve Settings	---")]
+		
+		
+		[Title("Curve Settings")]
+		[Space(10)]
 		public string leftFootAnimVariableName = "LeftFootIK";
 		public string rightFootAnimVariableName = "RightFootIK";
 		public bool useProIkFeature = false;
@@ -40,6 +61,16 @@ namespace FXnRXn
 		private Vector3 lastBalanceOffset;
 		private float footSpreadFactor;
 		
+		// Lean
+		private bool isLeaning = false;
+		private float currentLeanAngle = 0f;
+		private float targetLeanAngle = 0f;
+		private float leanStartTime = 0f;
+		private bool hasDroppedCargo = false;
+		private Coroutine leanCoroutine;
+		private float currentBalance = 1f;
+
+		
 
 		#endregion
 
@@ -49,11 +80,12 @@ namespace FXnRXn
 		{
 			if (animator == null) animator = GetComponent<Animator>();
 			if(porterSystem == null) porterSystem = PlayerController.Instance.GetPosterSystem();
-
-			
 		}
-		
-	
+
+		private void Start()
+		{
+			ResetLean();
+		}
 
 		private void FixedUpdate()
 		{
@@ -65,14 +97,23 @@ namespace FXnRXn
 				// Update weight ratio
 				currentWeightRatio = porterSystem.GetWeightCarryRatio();
 				UpdateWeightBasedPositions();
+				
+				// Update Balance
+				UpdateBalance();
+
+				if (enableBodyLean)
+				{
+					CheckLeanConditions();
+					
+				}
 			}
 
 			AdjustFeetTarget(ref rightFootPosition, HumanBodyBones.RightFoot);
 			AdjustFeetTarget(ref leftFootPosition, HumanBodyBones.LeftFoot);
 			
 			// Find and raycast to the ground to find positions
-			FeetPositionSolver(rightFootPosition, ref rightFootIKPosition, ref rightFootIKRotation); // Handle the solver right foot
-			FeetPositionSolver(leftFootPosition, ref leftFootIKPosition, ref leftFootIKRotation); // Handle the solver left foot
+			FeetPositionSolver(rightFootPosition, animator.GetBoneTransform(HumanBodyBones.RightFoot).transform,ref rightFootIKPosition, ref rightFootIKRotation); // Handle the solver right foot// // Newly Added
+			FeetPositionSolver(leftFootPosition, animator.GetBoneTransform(HumanBodyBones.LeftFoot).transform, ref leftFootIKPosition, ref leftFootIKRotation); // Handle the solver left foot // Newly Added
 		}
 		
 
@@ -83,6 +124,11 @@ namespace FXnRXn
 			
 			MovePelvisHeight();
 			
+			// Apply body lean if enabled
+			if (enableBodyLean)
+			{
+				ApplyBodyLean();
+			}
 			
 			// Apply weight-based adjustments to foot IK
 			Vector3 rightFootOffset = Vector3.right * footSpreadFactor + lastBalanceOffset;
@@ -121,7 +167,7 @@ namespace FXnRXn
 
 		#endregion
 		
-		#region Methods
+		#region Methods : Feet IK
 
 		private void UpdateWeightBasedPositions()
 		{
@@ -169,7 +215,7 @@ namespace FXnRXn
 
 			float totalOffset = (lOffsetPosition < rOffsetPosition) ? lOffsetPosition : rOffsetPosition;
 			// Add weight-based squat
-			float weightSquat = currentWeightRatio * 0.1f; // Subtle squat based on weight
+			float weightSquat = currentWeightRatio * weightInfluencePelvis; // Subtle squat based on weight
 			totalOffset -= weightSquat;
 			
 			Vector3 newPelvisPosition = animator.bodyPosition + Vector3.up * totalOffset;
@@ -183,7 +229,7 @@ namespace FXnRXn
 
 		}
 
-		private void FeetPositionSolver(Vector3 fromSkyPosition, ref Vector3 feetIkPositions, ref Quaternion feetIkRotations)
+		private void FeetPositionSolver(Vector3 fromSkyPosition, Transform foot, ref Vector3 feetIkPositions, ref Quaternion feetIkRotations) // // Newly Added : Transform foot,
 		{
 			RaycastHit feetOutHit;
 			if(showSolverDebug)
@@ -194,7 +240,11 @@ namespace FXnRXn
 				// Finding our feet ik position from the sky position
 				feetIkPositions = fromSkyPosition;
 				feetIkPositions.y = feetOutHit.point.y + pelvisOffset;
-				feetIkRotations = Quaternion.FromToRotation(Vector3.up, feetOutHit.normal) * transform.rotation; 
+				//feetIkRotations = Quaternion.FromToRotation(Vector3.up, feetOutHit.normal) * transform.rotation; // Commented 
+				// // Newly added(To solve foot Rotation)
+				Quaternion rp = Quaternion.LookRotation(foot.transform.parent.forward, foot.parent.up);
+				Vector3 footRot = new Vector3(0f, Quaternion.Inverse(rp).eulerAngles.y, 0f);
+				feetIkRotations = Quaternion.FromToRotation(Vector3.up, feetOutHit.normal) * Quaternion.Euler(footRot);
 				
 				return;
 			}
@@ -244,10 +294,157 @@ namespace FXnRXn
 
 		#endregion
 
-	
+		#region Body Lean System
+
+		private void UpdateBalance()
+		{
+			currentBalance = porterSystem.GetCurrentBalance() / 100f;
+		}
+
+		private void CheckLeanConditions()
+		{
+			bool shouldLean = porterSystem.GetWeightCarryRatio() >= leanTriggerWeightThreshold &&
+			                  currentBalance <= leanTriggerBalanceThreshold;
+
+			if (shouldLean && !isLeaning)
+			{
+				StartLeaning();
+			}
+			else if (!shouldLean && isLeaning)
+			{
+				StopLeaning();
+			}
+		}
+
+		private void StartLeaning()
+		{
+			isLeaning = true;
+			hasDroppedCargo = false;
+			leanStartTime = Time.time;
+			
+			// Determine lean direction based on balance
+			float leanDirection = currentBalance < 0.5f ? 1f : -1f;
+			if (UnityEngine.Random.value > 0.5f) leanDirection *= -1f; // Add some randomness
+
+			targetLeanAngle = maxLeanAngle * leanDirection;
+			
+			// Start the cargo drop timer
+			if (leanCoroutine != null)
+			{
+				StopCoroutine(leanCoroutine);
+			}
+
+			leanCoroutine = StartCoroutine(CargoDropTimer());
+			
+			Debug.Log($"Player started leaning! Weight: {currentWeightRatio:F2}, Balance: {currentBalance:F2}");
+		}
+
+		private void StopLeaning()
+		{
+			isLeaning = false;
+			targetLeanAngle = 0f;
+
+			if (leanCoroutine != null)
+			{
+				StopCoroutine(leanCoroutine);
+				leanCoroutine = null;
+			}
+			
+			Debug.Log("Player stopped leaning - balance recovered!");
+		}
+
+		private void ApplyBodyLean()
+		{
+			// Smoothly interpolate to target lean angle
+			float lerpSpeed = isLeaning ? leanSpeed : leanRecoverySpeed;
+			currentLeanAngle = Mathf.Lerp(currentLeanAngle, targetLeanAngle, Time.deltaTime * lerpSpeed);
+			
+			// Apply lean to bones
+			ApplyLeanToBone(HumanBodyBones.Spine, currentLeanAngle * 1f);
+			ApplyLeanToBone(HumanBodyBones.Chest, currentLeanAngle * 1f);
+			ApplyLeanToBone(HumanBodyBones.UpperChest, currentLeanAngle * 1f);
+		}
+
+		private void ApplyLeanToBone(HumanBodyBones bone, float leanAngle)
+		{
+			Transform boneTransform = animator.GetBoneTransform(bone);
+			if (boneTransform == null) return;
+			
+			// Create lean rotation around y-axis (side lean)
+			Quaternion leanRotation = Quaternion.Euler(0, leanAngle, 0);
+			
+			// Apply the lean rotation to the bone
+			animator.SetBoneLocalRotation(bone, boneTransform.localRotation * leanRotation);
+		}
+
+		private IEnumerator CargoDropTimer()
+		{
+			yield return new WaitForSeconds(timeBeforeCargoDrops);
+			
+			if (isLeaning && !hasDroppedCargo)
+			{
+				DropCargo();
+			}
+		}
+
+		private void DropCargo()
+		{
+			hasDroppedCargo = true;
+			
+			// Calculate amount to drop
+			float currentCargoWeight = porterSystem.GetCurrentCarryWeight();
+			float amountToDrop = currentCargoWeight * cargoDropPercentage;
+			
+			// Call cargo drop method
+			if (porterSystem != null)
+			{
+				porterSystem.CalculateToRemoveCargo(0.4f);
+				Debug.Log($"Dropping {cargoDropPercentage * 100}% of cargo! Amount: {amountToDrop}");
+			}
+			
+			// After dropping cargo, player should recover balance
+			float amount = Mathf.Min(porterSystem.GetCurrentBalance()+ 0.3f, 1f);
+			porterSystem.IncreaseBalance(amount);
+			
+			Debug.Log($"Cargo dropped due to imbalance! Dropped: {amountToDrop} units");
+		}
+		
+		
+
+		public void ResetLean()
+		{
+			enableBodyLean = true;
+			leanTriggerWeightThreshold = Mathf.Clamp01(UnityEngine.Random.Range(0.6f, 0.8f));
+			leanTriggerBalanceThreshold = Mathf.Clamp01(UnityEngine.Random.Range(0.45f, 0.6f));
+		}
+
+		#endregion
+
 		
 		//--------------------------------------------------------------------------------------------------------------
+
+		#region Helper
 		
+		// Public method to manually trigger lean (for testing or external systems)
+		public void TriggerLean(float intensity = 1f)
+		{
+			if (!enableBodyLean) return;
+			
+			targetLeanAngle = maxLeanAngle * intensity * (UnityEngine.Random.value > 0.5f ? 1f : -1f);
+			isLeaning = true;
+			
+			if (leanCoroutine != null)
+			{
+				StopCoroutine(leanCoroutine);
+			}
+			leanCoroutine = StartCoroutine(CargoDropTimer());
+		}
+		
+
+		#endregion
+
+		public bool IsCurrentlyLeaning() => isLeaning;
+
 	}
 	
 	

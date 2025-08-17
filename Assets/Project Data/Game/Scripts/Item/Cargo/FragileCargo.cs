@@ -67,8 +67,9 @@ namespace FXnRXn
 		
 		private void Start()
 		{
-			OnPlayerEnterRange += StartStayTimer;
-			OnPlayerExitRange += StopStayTimer;
+			// OnPlayerEnterRange += StartStayTimer;
+			// OnPlayerExitRange += StopStayTimer;
+			InputHandler.Instance.onInteract += MountCargoToPlayer;
 
 			
 			// Subscribe to the highlight events
@@ -81,17 +82,18 @@ namespace FXnRXn
 				outlineController = GetComponentInChildren<FragileCargoOutline>();
 			}
 
-			if (currentState == CargoState.Grounded)
-			{
-				ShowLoaderUI();
-			}
+			// if (currentState == CargoState.Grounded)
+			// {
+			// 	ShowLoaderUI();
+			// }
 		}
 
 		private void OnDisable()
 		{
 			
-			OnPlayerEnterRange += StartStayTimer;
-			OnPlayerExitRange += StopStayTimer;
+			// OnPlayerEnterRange -= StartStayTimer;
+			// OnPlayerExitRange -= StopStayTimer;
+			InputHandler.Instance.onInteract -= MountCargoToPlayer;
 
 			// Unsubscribe from events
 			OnPlayerEnterRange -= EnableHighlight;
@@ -119,7 +121,7 @@ namespace FXnRXn
 
 		private void StartStayTimer()
 		{
-			AddItemToPlayer();
+			//AddItemToPlayer();
 			if(stayTimerCoroutine != null) StopCoroutine(stayTimerCoroutine);
 			
 			stayTimerCoroutine = StartCoroutine(StayTimerCoroutine());
@@ -172,20 +174,31 @@ namespace FXnRXn
 		}
 		
 		
-		private void AddItemToPlayer()
+		public void AddItemToPlayer()
 		{
-
-			if(playerTransform == null && !playerInRange) return;
-			
-			var porterSystem = playerTransform.GetComponent<PorterSystem>();
+			var porterSystem = PlayerController.Instance.GetPosterSystem();
 			if (porterSystem == null || !porterSystem.IsPlayerAbleToMountCargo()) return;
 			
 			if (currentState == CargoState.Grounded)
 			{
-				Debug.Log($"Player entered range of {item} - Item added to player inventory");
+				var cargoData = new CargoItem();
+				cargoData.ID = id;
+				cargoData.Name = item;
+				cargoData.physicalItem = transform;
+				cargoData.localMountPosition = transform.localPosition;
+				cargoData.weight = weight;
+				cargoData.size = size;
+				cargoData.fragile = fragile;
+				cargoData.balanceImpact = 2f;
+				cargoData.isMounted = true;
+				isMounted = true;
+				porterSystem.PickupCargoItem(cargoData);
+				DisableHighlight();
+				HideLoaderUI();
+				Debug.Log($"Cargo {item} mounted to player anchor position after {stayDuration}s delay");
 			}
 		}
-		private void MountCargoToPlayer()
+		public void MountCargoToPlayer()
 		{
 			if (playerTransform == null || !playerInRange) return;
 			
@@ -289,14 +302,14 @@ namespace FXnRXn
 				playerInRange = true;
 				playerTransform = foundPlayer;
 				OnPlayerEnterRange?.Invoke();
-				Debug.Log($"Player entered range of {item}");
+				
 			}
 			else if (!playerFound && playerInRange)
 			{
 				playerInRange = false;
 				playerTransform = null;
 				OnPlayerExitRange?.Invoke();
-				Debug.Log($"Player exited range of {item}");
+				
 			}
 		}
 		public void DisableCargo()

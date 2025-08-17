@@ -3,6 +3,7 @@
 
 
 using System;
+using TriInspector;
 using UnityEngine;
 
 
@@ -22,12 +23,14 @@ namespace FXnRXn
 		#endregion
 		
 		#region Properties
-		[Header("--- Player Settings ---")]
+		[Title("Player Settings")]
+		[Space(10)]
 		[SerializeField] private float							playerMovementSpeed = 4f;
 		[SerializeField] private float							playerAcceleration = 7f;
 		[SerializeField] private float							gravity = -9.81f;
 		
-		[Header("--- Ground Detection ---")]
+		[Title("Ground Detection")]
+		[Space(10)]
 		[SerializeField] private LayerMask						groundLayerMask = 1; // Ground layer
 		[SerializeField] private float							groundCheckDistance = 0.2f;
 		[SerializeField] private Transform						groundCheckPoint;
@@ -99,6 +102,22 @@ namespace FXnRXn
 						playerAnimator.SetBool(RUN_HASH, true);
 						speed = 0;
 					}
+					
+					// Get camera transform
+					Transform cameraTransform = CameraController.Instance?.GetMainCameraTransform;
+
+					// Get the camera's forward and right vectors and flatten them
+					Vector3 cameraForward = CameraController.Instance.GetMainCameraForward;
+					Vector3 cameraRight = CameraController.Instance.GetMainCameraRight;
+        
+					cameraForward.y = 0;
+					cameraRight.y = 0;
+					cameraForward.Normalize();
+					cameraRight.Normalize();
+
+					// Calculate movement direction based on camera
+					Vector3 moveDir = (cameraForward * InputHandler.Instance.MovementInput.z + 
+					                   cameraRight * InputHandler.Instance.MovementInput.x).normalized;
 
 					float maxAllowedSpeed = InputHandler.Instance.MovementInput.magnitude * maxSpeed;
 					
@@ -123,8 +142,8 @@ namespace FXnRXn
 					playerAnimator.SetFloat(MOVEMENT_MULTIPLIER_HASH, multiplier);
 					//playerAnimator.SetFloat(TIRED_MULTIPLIER_HASH, porterSystem.ApplyMovementModifiers() > 0.5f ? 0 : 1);
 					
-					horizontalMovement = InputHandler.Instance.MovementInput * speed * Time.deltaTime;
-					transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(InputHandler.Instance.MovementInput.normalized), 0.2f);
+					horizontalMovement = moveDir * speed * Time.deltaTime;
+					transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(moveDir), 0.2f);
 				}
 				else
 				{
@@ -181,6 +200,9 @@ namespace FXnRXn
 		//--------------------------------------------------------------------------------------------------------------
 		public CharacterController GetCharacterController() => playerController;
 		public PorterSystem GetPosterSystem() => porterSystem;
+
+		#region Debug
+		
 		private void OnDrawGizmosSelected()
 		{
 			if (groundCheckPoint != null)
@@ -189,6 +211,8 @@ namespace FXnRXn
 				Gizmos.DrawRay(groundCheckPoint.position, Vector3.down * groundCheckDistance);
 			}
 		}
+		
+		#endregion
 
 
 	}
