@@ -9,6 +9,26 @@ namespace FXnRXn
 	{
     		
 		#region Properties
+		[Title("Advanced Features")]
+		[Space(10)]
+		[SerializeField] private WeaponAttachment[]		attachments;
+		[SerializeField] private bool					useHapticFeedback = true;
+		[SerializeField] private bool					useAdaptiveTriggers = true;
+		
+		[Title("Weapon Condition")]
+		[Space(10)]
+		[SerializeField] private float					maxDurability = 100f;
+		[SerializeField] private float					currentDurability = 100f;
+		[SerializeField] private float					durabilityLossPerShot = 0.1f;
+		[SerializeField] private AnimationCurve			damageByDurability;
+		
+		
+		[Title("Ammunition Types")]
+		[Space(10)]
+		[SerializeField] private List<AmmoType> availableAmmoTypes;
+		[SerializeField] private int currentAmmoTypeIndex = 0;
+		
+		
 		[Title("Anti-BT Settings")]
 		[Space(10)]
 		[SerializeField] private GameObject				hematicBulletPrefab;
@@ -34,25 +54,90 @@ namespace FXnRXn
 		#endregion
 		
 		#region Unity Callbacks
-		
-		
+
+		protected override void Start()
+		{
+			base.Start();
+		}
+
+		protected override void Update()
+		{
+			base.Update();
+		}
+
 		#endregion
 		
 		#region Methods
+		
+		public override void Fire()
+		{
+			
+			// Apply durability loss
+			
+			// Generate heat
+			
+			// Apply haptic feedback
+			
+			base.Fire();
+		}
+
+		public override void Reload()
+		{
+			base.Reload();
+		}
+
+
 
 		protected override void PerformFire()
 		{
+			
+			AmmoType currentAmmo = availableAmmoTypes[currentAmmoTypeIndex];
+			string projectileTag = currentAmmo.projectilePoolTag;
+			
+			// Calculate accuracy with all modifiers
+			float accuracy = CalculateAccuracy();
+			
+			// Spawn projectile from pool
+			Vector3 spread = Random.insideUnitSphere * (1f - accuracy) * 0.1f;
+			Quaternion rotation = firePoint.rotation * Quaternion.Euler(spread * 100f);
+
+			
+			GameObject projectile = ObjectPoolManager.Instance.SpawnFromPool(
+				projectileTag, 
+				firePoint.position, 
+				rotation
+			);
+			
+			if (projectile != null)
+			{
+				AdvancedProjectile proj = projectile.GetComponent<AdvancedProjectile>();
+				if (proj != null)
+				{
+					float damageModifier = damageByDurability.Evaluate(currentDurability / maxDurability);
+					proj.Initialize(
+						currentAmmo.projectileSpeed, 
+						stats.damage * currentAmmo.damageMultiplier * damageModifier, 
+						stats.range
+					);
+				}
+			}
+			
 			if (currentBloodLevel < bloodConsumptionPerShot)
 			{
 				// Not enough blood
-				PlaySound(emptySound);
+				if(emptySound != null) PlaySound(emptySound);
 				return;
 			}
             
 			currentBloodLevel -= bloodConsumptionPerShot;
 			OnBloodLevelChanged?.Invoke(currentBloodLevel, maxBloodLevel);
+			
+			
+			
+			
+			
             
-			GameObject bullet = Instantiate(hematicBulletPrefab, firePoint.position, firePoint.rotation);
+			//GameObject bullet = Instantiate(hematicBulletPrefab, firePoint.position, firePoint.rotation);
 			//HematicBullet bulletScript = bullet.GetComponent<HematicBullet>();
             
 			// if (bulletScript != null)
@@ -74,8 +159,6 @@ namespace FXnRXn
 				Destroy(bloodFlash, 0.2f);
 			}
 		}
-		
-		
 		
 		private void RevealNearbyBTs()
 		{
@@ -129,8 +212,14 @@ namespace FXnRXn
 				Destroy(revealSphere);
 			}
 		}
-		
-		
+
+		private float CalculateAccuracy()
+		{
+			float accuracy = 1f;
+
+			return Mathf.Clamp01(accuracy);
+
+		}
 		
 		
 

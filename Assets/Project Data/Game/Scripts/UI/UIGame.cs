@@ -84,6 +84,7 @@ namespace FXnRXn
 				shootButton.onClick.AddListener(() =>
 				{
 					
+					PorterWeaponManager.Instance.onWeaponFirePressed?.Invoke();
 				});
 			}
 			

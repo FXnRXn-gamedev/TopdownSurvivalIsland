@@ -36,6 +36,8 @@ namespace FXnRXn
 		[SerializeField] protected static string fireAnimationTrigger = "Fire";
 		[SerializeField] protected static string reloadAnimationTrigger = "Reload";
         
+		
+		protected int	currentAmmo;
 		protected float nextFireTime;
 		protected bool isReloading;
 		protected bool isAiming;
@@ -46,7 +48,7 @@ namespace FXnRXn
 		
 		#region Unity Callbacks
 
-		private void Start()
+		protected virtual  void Start()
 		{
 			if (GetComponent<AudioSource>() != null)
 			{
@@ -56,31 +58,50 @@ namespace FXnRXn
 			{
 				audioSource = GetComponentInChildren<AudioSource>();
 			}
+			
+			if (currentAmmo <= 0)
+			{
+				currentAmmo = stats.magazineSize;
+			}
+			// Notify UI of initial ammo state
+			OnAmmoChanged?.Invoke(currentAmmo, stats.reserveAmmo);
+
+		}
+
+		protected virtual void Update()
+		{
+			
 		}
 
 		#endregion
 		
 		#region Methods
 
-		public void Fire()
+		public void ReadyToFire()
 		{
+			Fire();
+		}
+
+		public virtual void Fire()
+		{
+			
 			if (!CanFire())
 			{
-				if (stats.currentAmmo <= 0 && !isReloading)
+				if (currentAmmo <= 0 && !isReloading)
 				{
 					PlaySound(emptySound);
 					StartCoroutine(AutoReload());
 				}
 				return;
 			}
-
 			nextFireTime = Time.time + (1f / stats.fireRate);
-			stats.currentAmmo--;
+			currentAmmo--;
 			
 			PerformFire();
 			PlayFireEffects();
-			OnAmmoChanged?.Invoke(stats.currentAmmo, stats.reserveAmmo);
+			OnAmmoChanged?.Invoke(currentAmmo, stats.reserveAmmo);
 			OnWeaponFired?.Invoke();
+			
 		}
 		
 		protected abstract void PerformFire();
@@ -98,7 +119,7 @@ namespace FXnRXn
 
 		public virtual void Reload()
 		{
-			if(isReloading || stats.currentAmmo == stats.magazineSize || stats.reserveAmmo <= 0) return;
+			if(isReloading || currentAmmo == stats.magazineSize || stats.reserveAmmo <= 0) return;
 
 			StartCoroutine(ReloadCoroutine());
 		}
@@ -112,13 +133,13 @@ namespace FXnRXn
 
 			yield return new WaitForSeconds(stats.reloadTime);
 			
-			int ammoNeeded = stats.magazineSize - stats.currentAmmo;
+			int ammoNeeded = stats.magazineSize - currentAmmo;
 			int ammoToReload = Mathf.Min(ammoNeeded, stats.reserveAmmo);
             
-			stats.currentAmmo += ammoToReload;
+			currentAmmo += ammoToReload;
 			stats.reserveAmmo -= ammoToReload;
             
-			OnAmmoChanged?.Invoke(stats.currentAmmo, stats.reserveAmmo);
+			OnAmmoChanged?.Invoke(currentAmmo, stats.reserveAmmo);
 			isReloading = false;
 		}
 
@@ -129,7 +150,7 @@ namespace FXnRXn
 
 		public virtual bool CanFire()
 		{
-			return Time.time >= nextFireTime && stats.currentAmmo > 0 && !isReloading;
+			return Time.time >= nextFireTime && currentAmmo > 0 && !isReloading;
 		}
 
 		public WeaponStats GetStats() => stats;
@@ -162,6 +183,24 @@ namespace FXnRXn
 		#endregion
 
 		
+	}
+	
+	[Serializable]
+	public class AmmoType
+	{
+		public string ammoName;
+		public string projectilePoolTag;
+		public float damageMultiplier = 1f;
+		public float projectileSpeed = 50f;
+		public Sprite ammoIcon;
+		public Color ammoColor = Color.white;
+	}
+    
+	public enum FireMode
+	{
+		Single,
+		Burst,
+		Auto
 	}
 	
 	

@@ -8,7 +8,7 @@ public class WeaponStats : ScriptableObject
 	public float	range;
 	public float	fireRate;
 	public int		magazineSize;
-	public int		currentAmmo;
+	
 	public int		reserveAmmo;
 	public float	reloadTime;
 	public bool		isHematic;

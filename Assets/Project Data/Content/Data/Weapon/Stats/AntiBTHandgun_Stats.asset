@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: AntiBTHandgun
   damage: 5
-  range: 2
-  fireRate: 0.1
+  range: 1000
+  fireRate: 15
   magazineSize: 24
-  currentAmmo: 0
-  reserveAmmo: 0
+  currentAmmo: 24
+  reserveAmmo: 240
   reloadTime: 0.5
-  isHematic: 0
-  isAntiDT: 0
+  isHematic: 1
+  isAntiDT: 1

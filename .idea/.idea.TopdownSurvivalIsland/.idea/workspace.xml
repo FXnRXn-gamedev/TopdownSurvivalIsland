@@ -6,25 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="5f710aab-0dec-4eed-ac2f-318e2c2db448" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TopdownSurvivalIsland/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TopdownSurvivalIsland/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Animations/Player/Player Animator.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Animations/Player/Player Animator.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Modules/Control System/InputHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Modules/Control System/InputHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Prefab/Item/Cargo Item.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Prefab/Item/Cargo Item.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/Item/Cargo/FragileCargo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/Item/Cargo/FragileCargo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/Player/PlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/Player/Porter System/AdvancedFootIK.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/Player/Porter System/AdvancedFootIK.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/Player/Porter System/PorterSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/Player/Porter System/PorterSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Content/Data/Weapon/Stats/AntiBTHandgun_Stats.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Content/Data/Weapon/Stats/AntiBTHandgun_Stats.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/UI/UIGame.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/UI/UIGame.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/Weapon/AntiBTHandgun.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/Weapon/AntiBTHandgun.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/Weapon/BaseWeapon.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/Weapon/BaseWeapon.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/Weapon/WeaponStats.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Project Data/Game/Scripts/Weapon/WeaponStats.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/DefaultVolumeProfile.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/DefaultVolumeProfile.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/Mobile_RPAsset.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/Mobile_RPAsset.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/Mobile_Renderer.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/Mobile_Renderer.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/UniversalRenderPipelineGlobalSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/UniversalRenderPipelineGlobalSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +25,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///AIAssistantSnippet.." root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/84f0d810adef4e6c8deab33e4ae93f7c1dec00/4b/5116f7a4/Object.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/91062591f4db4bdb9210604cc73c48381f9200/79/23337e7b/LayoutDataStore.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../Survival Island  Template/Assets/Project Data/Game/Scripts/Player/PlayerBehavior.cs" root0="SKIP_HIGHLIGHTING" />
@@ -192,7 +180,10 @@
       <workItem from="1755186485271" duration="851000" />
       <workItem from="1755224878594" duration="3530000" />
       <workItem from="1755355188641" duration="3160000" />
-      <workItem from="1755402215676" duration="417000" />
+      <workItem from="1755402215676" duration="1896000" />
+      <workItem from="1755512803672" duration="10173000" />
+      <workItem from="1755524580312" duration="357000" />
+      <workItem from="1755569786580" duration="8387000" />
     </task>
     <servers />
   </component>
